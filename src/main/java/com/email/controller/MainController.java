@@ -1,17 +1,14 @@
 package com.email.controller;
 
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -67,18 +64,28 @@ public class MainController {
         
 //        System.out.println("Message: " + stringWriter.toString());
         
+        // Create the attachment
+        
+        
+
+        
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 	        @SuppressWarnings({"unchecked","rawtypes"})
 			public void prepare(MimeMessage mimeMessage) throws Exception {
-	            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+	            
+	        	MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 	            message.setTo(recipientAddress);
 	            message.setSubject(subject);
-				
+//	            message.setText("my text <img src='cid:logo'>", true);
+//	            message.addInline("logo", new ClassPathResource("images/logo.png"));
+	            FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/") + "/images/logo.png");
+	    		message.addAttachment(file.getFilename(), file);
+	            
 	            Map model = new HashMap();
 	            model.put("firstName", "Proton");
 	            model.put("lastName", "Chalis");
 	            model.put("location", "Augmentis");
-	            model.put("image", request.getSession().getServletContext().getRealPath("/") + "images/image001.png");
+	            model.put("image", request.getSession().getServletContext().getContextPath() + "/static/images/logo.png");
 	            
 				String text = VelocityEngineUtils.mergeTemplateIntoString(
 	            		velocityEngine, "./mail-template/" + mailTemplate, "UTF-8", model);
