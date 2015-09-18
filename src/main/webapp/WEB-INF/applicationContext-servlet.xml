@@ -33,8 +33,8 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
-		<property name="username" value="<!-- Gmail Account -->" />
-		<property name="password" value="<!--  Gmail Password -->" />
+		<property name="username" value="thanadolthirapongpaisaw@gmail.com" />
+		<property name="password" value="s4050876" />
  
 		<!-- The name of the property, following JavaBean naming conventions -->
 		<property name="javaMailProperties">
@@ -45,6 +45,15 @@
 				<prop key="mail.debug">true</prop>
 			</props>
 		</property>
+	</bean>
+	
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+                <value>
+                        resource.loader=class
+                        class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                </value>
+        </property>
 	</bean>
 	
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

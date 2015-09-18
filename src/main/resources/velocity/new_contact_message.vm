@@ -1,0 +1,22 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<html>
+<head>
+	<link href="<c:url value="/static/bootstrap-3.3.5/css/bootstrap.min.css"/>" rel="stylesheet"></link>
+</head>
+	
+	<body>
+		<button type="button" class="btn btn-danger">Danger</button>
+		<h3>Hi Podcastpedia team, you have one new contact message!</h3>
+		<hr>
+		<p>
+			email - ${address}
+		</p>
+		<p>
+			topic - ${subject}
+		</p>
+		<p>
+			message - ${message}
+		</p>
+	</body>
+
+</html>
