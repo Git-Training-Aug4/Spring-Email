@@ -33,8 +33,9 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
-		<property name="username" value="thanadolthirapongpaisaw@gmail.com" />
-		<property name="password" value="s4050876" />
+		<property name="username" value="<!-- User -->" />
+		<property name="password" value="<!-- Password -->" />
+
  
 		<!-- The name of the property, following JavaBean naming conventions -->
 		<property name="javaMailProperties">
@@ -43,6 +44,8 @@
 				<prop key="mail.smtp.auth">true</prop>
 				<prop key="mail.smtp.starttls.enable">true</prop>
 				<prop key="mail.debug">true</prop>
+			    <prop key="mail.mime.charset">UTF-8</prop>
+			    <prop key="mail.transport.protocol">smtp</prop>
 			</props>
 		</property>
 	</bean>
@@ -56,6 +59,7 @@
         </property>
 	</bean>
 	
+	<!-- Exception -->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
