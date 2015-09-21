@@ -8,7 +8,7 @@
 </head>
 <body style="margin: 50px;">
 	<h1>Send Email</h1>
-	<form action="${pageContext.request.contextPath}/sendEmail" method="post">
+	<form action="${pageContext.request.contextPath}/sendEmail" method="post" enctype="multipart/form-data">
 		<div>
 			<label for="recipient">To :</label>
 			<input type="text" name="recipient" id="recipient">
@@ -25,6 +25,10 @@
 		</div>
 		<div>
 			<textarea rows="10" cols="100" name="message" id="message"></textarea>
+		</div>
+		
+		<div>
+			<input type="file" name="file"/>
 		</div>
 		<div>
 			<input type="submit" value="Submit" />

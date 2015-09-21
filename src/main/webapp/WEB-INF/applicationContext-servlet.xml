@@ -33,8 +33,8 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
-		<property name="username" value="<!-- User -->" />
-		<property name="password" value="<!-- Password -->" />
+		<property name="username" value="thanadolthirapongpaisaw@gmail.com" />
+		<property name="password" value="s4050876" />
 
  
 		<!-- The name of the property, following JavaBean naming conventions -->
@@ -66,5 +66,14 @@
                 <prop key="java.lang.Exception">error</prop>
             </props>
         </property>
-    </bean>  
+    </bean> 
+    
+    <!-- Upload file -->	
+	<bean id="multipartResolver"
+	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	
+	    <!-- one of the properties available; the maximum file size in bytes -->
+	    <property name="maxUploadSize" value="10000000"/>
+    </bean>
+     
 </beans>
