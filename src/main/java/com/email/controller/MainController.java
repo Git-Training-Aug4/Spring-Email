@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -41,30 +38,23 @@ public class MainController {
 	}
 	
 	@RequestMapping(value="/sendEmail", method={ RequestMethod.POST })
-	public String sendEmail(final HttpServletRequest request,@RequestParam("file") MultipartFile[] files) throws IOException {
+	public String sendEmail(final MultipartHttpServletRequest request) throws IOException {
 		
 		// takes input from e-mail form
         final String recipientAddress = request.getParameter("recipient");
         final String subject = request.getParameter("subject");
         final String mailTemplate = "mail.vm";
         
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
-        MultipartFile multipartFile = multipartRequest.getFile("file");
-        
-        File file = convertFile(multipartFile);
+        List<MultipartFile> files = request.getFiles("file");
         
         final List<String> filePart = new ArrayList<String>();
         final List<String> fileName = new ArrayList<String>();
-        for(MultipartFile multipartFiles : files){
-        	File f = convertFile(multipartFiles);
+        for(MultipartFile file : files){
+        	File f = convertFile(file);
         	fileName.add(new String(f.getName().getBytes("iso-8859-1"),"UTF-8"));
         	filePart.add(f.getAbsolutePath());
         }
         
-        //final String filePart = file.getAbsolutePath();
-        //final String fileName = new String(multipartFile.getOriginalFilename().getBytes("iso-8859-1"),"UTF-8");
-        //System.out.println(">>>>>>>>>>>>"+filePart);
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Path : " + files.getAbsolutePath());
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 	        @SuppressWarnings({"unchecked","rawtypes"})
 			public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -81,12 +71,7 @@ public class MainController {
 		            message.addAttachment(fileName.get(i), file);
 		            i++;
 	            }
-	            //FileSystemResource file = new FileSystemResource(filePart);
-	            //message.addAttachment(fileName, file);
-	           
-	    		//message.addAttachment(file.getFilename(), (DataSource) files);
-	            //message.addAttachment(file.getFilename(), file);
-	            //message.addAttachment(file1.getFilename(), file1);
+	            
 	            Map model = new HashMap();
 	            model.put("firstName", "Proton");
 	            model.put("lastName", "Chalis");
