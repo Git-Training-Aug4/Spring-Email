@@ -3,7 +3,9 @@ package com.email.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -37,7 +41,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value="/sendEmail", method={ RequestMethod.POST })
-	public String sendEmail(final HttpServletRequest request) throws IOException {
+	public String sendEmail(final HttpServletRequest request,@RequestParam("file") MultipartFile[] files) throws IOException {
 		
 		// takes input from e-mail form
         final String recipientAddress = request.getParameter("recipient");
@@ -46,11 +50,20 @@ public class MainController {
         
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
         MultipartFile multipartFile = multipartRequest.getFile("file");
-       
+        
         File file = convertFile(multipartFile);
         
-        final String filePart = file.getAbsolutePath();
-        final String fileName = new String(multipartFile.getOriginalFilename().getBytes("iso-8859-1"),"UTF-8");
+        final List<String> filePart = new ArrayList<String>();
+        final List<String> fileName = new ArrayList<String>();
+        for(MultipartFile multipartFiles : files){
+        	File f = convertFile(multipartFiles);
+        	fileName.add(new String(f.getName().getBytes("iso-8859-1"),"UTF-8"));
+        	filePart.add(f.getAbsolutePath());
+        }
+        
+        //final String filePart = file.getAbsolutePath();
+        //final String fileName = new String(multipartFile.getOriginalFilename().getBytes("iso-8859-1"),"UTF-8");
+        //System.out.println(">>>>>>>>>>>>"+filePart);
 //        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Path : " + files.getAbsolutePath());
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 	        @SuppressWarnings({"unchecked","rawtypes"})
@@ -62,9 +75,14 @@ public class MainController {
 //	            message.setText("my text <img src='cid:logo'>", true);
 //	            message.addInline("logo", new ClassPathResource("images/logo.png"));
 	            //FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/") + "/images/logo.png");
-	         
-	            FileSystemResource file = new FileSystemResource(filePart);
-	            message.addAttachment(fileName, file);
+	            int i = 0;
+	            for(String fPart : filePart){
+	            	FileSystemResource file = new FileSystemResource(fPart);
+		            message.addAttachment(fileName.get(i), file);
+		            i++;
+	            }
+	            //FileSystemResource file = new FileSystemResource(filePart);
+	            //message.addAttachment(fileName, file);
 	           
 	    		//message.addAttachment(file.getFilename(), (DataSource) files);
 	            //message.addAttachment(file.getFilename(), file);

@@ -28,7 +28,10 @@
 		</div>
 		
 		<div>
-			<input type="file" name="file"/>
+			file 1: <input type="file" name="file"/>
+		</div>
+		<div>
+			file 2: <input type="file" name="file"/>
 		</div>
 		<div>
 			<input type="submit" value="Submit" />
