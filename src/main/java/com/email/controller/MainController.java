@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -24,6 +25,8 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -44,6 +47,12 @@ public class MainController {
 	@RequestMapping(value="/create", method={ RequestMethod.GET })
 	public String createTemplate() {
 		return "create_template";
+	}
+	
+	@RequestMapping(value="/setTemplate", method={RequestMethod.POST})
+	public @ResponseBody String setTemplate(@RequestParam(value="editor1") String template) {
+		System.out.println(template);
+		return template;
 	}
 	
 	@RequestMapping(value="sendmail/interview", method={ RequestMethod.POST })
