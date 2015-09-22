@@ -8,7 +8,7 @@
 </head>
 <body style="margin: 50px;">
 	<h1>Send Email</h1>
-	<form action="${pageContext.request.contextPath}/sendEmail" method="post" enctype="multipart/form-data">
+	<form action="${pageContext.request.contextPath}/sendmail/interview" method="post" enctype="multipart/form-data">
 		<div>
 			<label for="recipient">To :</label>
 			<input type="text" name="recipient" id="recipient">
