@@ -57,9 +57,11 @@ public class MainController {
         final List<String> filePart = new ArrayList<String>();
         final List<String> fileName = new ArrayList<String>();
         for(MultipartFile file : files){
-        	File f = convertFile(file);
-        	fileName.add(new String(f.getName().getBytes("iso-8859-1"),"UTF-8"));
-        	filePart.add(f.getAbsolutePath());
+        	if(!file.getOriginalFilename().equals("")){
+        		File f = convertFile(file);
+            	fileName.add(new String(f.getName().getBytes("iso-8859-1"),"UTF-8"));
+            	filePart.add(f.getAbsolutePath());
+        	}
         }
         
 		StringWriter writer = new StringWriter();
