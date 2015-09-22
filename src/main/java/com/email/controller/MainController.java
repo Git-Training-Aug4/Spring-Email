@@ -80,7 +80,7 @@ public class MainController {
 	            model.put("image", request.getSession().getServletContext().getContextPath() + "/static/images/logo.png");
 	            
 				String text = VelocityEngineUtils.mergeTemplateIntoString(
-	            		velocityEngine, "./mail-template/" + mailTemplate, "UTF-8", model);
+	            		velocityEngine, mailTemplate, "UTF-8", model);
 	            message.setText(text, true);
 	        }
         };
