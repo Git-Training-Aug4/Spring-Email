@@ -56,10 +56,9 @@ public class Config {
 //		
 //		
 //		config.addConfigValue("toolbar", list);
-		config.addConfigValue("width","500");
+//		config.addConfigValue("width","500");
 		
 		//System.out.println(list);
-		
 		return config;
 	}
  
