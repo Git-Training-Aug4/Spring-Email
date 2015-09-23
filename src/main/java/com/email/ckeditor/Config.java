@@ -59,6 +59,20 @@ public class Config {
 //		config.addConfigValue("width","500");
 		
 		//System.out.println(list);
+		List<List<String>> list = new ArrayList<List<String>>();
+		List<String> subList = new ArrayList<String>();
+		List<String> clipboard = new ArrayList<String>();
+		clipboard.add("Cut");
+		clipboard.add("Copy");
+		clipboard.add("Paste");
+		subList.add("Source");
+		subList.add("-");
+		subList.add("Bold");
+		subList.add("Italic");
+		list.add(subList);
+		list.add(clipboard);
+		config.addConfigValue("toolbar", list);
+		config.addConfigValue("width","500");
 		return config;
 	}
  
