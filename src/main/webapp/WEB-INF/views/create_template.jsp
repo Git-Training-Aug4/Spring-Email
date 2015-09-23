@@ -20,9 +20,7 @@
 			<input type="submit" value="Submit" />
 		</p>
 	</form>
-	<ckeditor:replace replace="editor1" basePath="${ pageContext.request.contextPath }/static/ckeditor/" 
-		config="<%= Config.createConfig() %>"
-   		events="<%= Config.createEventHandlers() %>" />
+	<ckeditor:replace replace="editor1" basePath="${ pageContext.request.contextPath }/static/ckeditor/"/>
 
 
 </body>
