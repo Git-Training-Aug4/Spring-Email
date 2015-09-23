@@ -28,7 +28,7 @@
 				<form action="${ pageContext.request.contextPath }/setTemplate" method="POST">
 					<div class="form-group">
 						<label for="name">Template Name :</label>
-						<input type="text" class="form-control" placeholder="Template Name">
+						<input type="text" name="name" class="form-control" placeholder="Template Name">
 					</div>
 					<div class="form-group">
 						<label for="template">Template :</label>
