@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -22,7 +21,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.velocity.VelocityEngineUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,7 +48,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value="/setTemplate", method={RequestMethod.POST})
-	public @ResponseBody String setTemplate(@RequestParam(value="editor1") String template) {
+	public @ResponseBody String setTemplate(@RequestParam(value="template") String template, @RequestParam(value="name") String name) {
 		System.out.println(template);
 		return template;
 	}
@@ -85,7 +83,6 @@ public class MainController {
 		System.out.println("success: " + writer.toString());
 		
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
-	        @SuppressWarnings({"unchecked","rawtypes"})
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 	            
 	        	MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -98,6 +95,8 @@ public class MainController {
 		            message.addAttachment(fileName.get(i), file);
 		            i++;
 	            }
+	            
+	            
 	            
 	            velocityEngine.init();
 	            
