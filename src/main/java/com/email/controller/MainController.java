@@ -49,6 +49,11 @@ public class MainController {
 		return "create_template";
 	}
 	
+	@RequestMapping(value="/insert", method={ RequestMethod.GET })
+	public String createTemplate1() {
+		return "create_template";
+	}
+	
 	@RequestMapping(value="/setTemplate", method={RequestMethod.POST})
 	public @ResponseBody String setTemplate(final HttpServletRequest request, 
 			@RequestParam(value="template") String template, @RequestParam(value="name") String name) throws UnsupportedEncodingException{
