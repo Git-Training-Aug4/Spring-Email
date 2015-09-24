@@ -72,4 +72,6 @@
 	    <property name="maxUploadSize" value="10000000"/>
     </bean>
      
+     <import resource="classpath:hibernate4.xml"/>
+     
 </beans>
