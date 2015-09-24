@@ -74,6 +74,4 @@
     <!-- Database -->
     <import resource="classpath:hibernate4.xml" />
      
-     <import resource="classpath:hibernate4.xml"/>
-     
 </beans>
