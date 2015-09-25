@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
+import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.VelocityContext;
@@ -22,6 +23,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,7 +59,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value="/send", method={RequestMethod.GET})
-	  public @ResponseBody String send() throws UnsupportedEncodingException {
+	  public String send(Model model) throws UnsupportedEncodingException {
 	    
 	    String firstName = "Anat";
 	    String date = "15 June 2015";
@@ -83,6 +86,9 @@ public class MainController {
         context.put("recruitPhone", recruitPhone);
         
         MailTemplate mailTemplate = mailTemplateService.findById(1);
+        //String encodeTemplate = new String(mailTemplate.getTemplate().getBytes("UTF-8"),"UTF-8");
+        
+        model.addAttribute("text",mailTemplate.getTemplate());
         
         //merge context and writer to String 
         velocityEngine.evaluate(context, writer, "SimpleVelocity", mailTemplate.getTemplate()); 
@@ -93,7 +99,7 @@ public class MainController {
         //define finalTemplate
         String finalTemplate = mailHeader + "<body>" + writer.toString() + "</body></html>";
         
-        final String encode = new String(finalTemplate.getBytes("iso-8859-1"),"UTF-8");
+        final String encode = new String(finalTemplate.getBytes("UTF-8"),"UTF-8");
 	        //create mime message
 	    MimeMessagePreparator preparator = new MimeMessagePreparator() {
 	      public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -115,11 +121,10 @@ public class MainController {
         //send email
         mailSender.send(preparator);
     
-        //console input
         System.out.println("templateName : " + mailTemplate.getName());
-        System.out.println("finalTemplate : " + encode);
+        System.out.println("finalTemplate : " + mailTemplate.getTemplate());
     
-        return mailTemplate.getTemplate();
+        return "result";
 	}
 	
 	@RequestMapping(value="/insert", method={ RequestMethod.GET })
@@ -164,7 +169,7 @@ public class MainController {
         //define finalTemplate
         String finalTemplate = mailHeader + "<body>" + writer.toString() + "</body></html>";
         
-        final String encode = new String(finalTemplate.getBytes("iso-8859-1"),"UTF-8");
+        final String encode = new String(finalTemplate.getBytes("UTF-8"),"UTF-8");
         //create mime message
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {

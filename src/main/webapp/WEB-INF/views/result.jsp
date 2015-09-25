@@ -9,5 +9,6 @@
 <body style="margin: 50px;">
 	<h2>Thank you, your email has been sent.</h2>
 	<a href="${ pageContext.request.contextPath}">Back to send page.</a>
+	${text}
 </body>
 </html>
