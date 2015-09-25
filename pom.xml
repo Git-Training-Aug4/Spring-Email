@@ -35,14 +35,7 @@
   		</dependency>
   		<!-- end email-db -->
     	
-    	<!-- email-db -->
-		<dependency>
-			<groupId>com.aug.rm</groupId>
-			<artifactId>email-db</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<!-- end email-db -->
-		
+    	
     	<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

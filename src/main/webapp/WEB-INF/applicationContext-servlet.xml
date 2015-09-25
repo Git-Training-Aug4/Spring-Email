@@ -14,6 +14,10 @@
         http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
  
+ 
+    
+    <!-- <import resource="applicationContext-persistance.xml"/> -->
+    
 	<!-- Context -->
 	<context:annotation-config/>
 	<context:component-scan base-package="com.email.*" />
@@ -21,6 +25,8 @@
 	<!-- MVC -->
 	<mvc:annotation-driven/>
 	<mvc:resources location="/" mapping="/static/**"/>
+	
+	
 	
 	<!-- View Location -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -56,14 +62,14 @@
 	</bean>
 	
 	<!-- Exception -->
-	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+<!-- 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
                 <prop key="java.lang.Exception">error</prop>
             </props>
         </property>
     </bean> 
-    
+     -->
     <!-- Upload file -->	
 	<bean id="multipartResolver"
 	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -71,7 +77,9 @@
 	    <property name="maxUploadSize" value="10000000"/>
     </bean>
     
-    <!-- Database -->
-    <import resource="classpath:hibernate4.xml" />
+    <tx:annotation-driven />
+ 	
+    
+    
      
 </beans>

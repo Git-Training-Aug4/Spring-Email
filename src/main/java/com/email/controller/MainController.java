@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.email.model.MailTemplate;
+import com.email.service.MailTemplateService;
+
 @Controller
 public class MainController {
 	
@@ -39,6 +42,9 @@ public class MainController {
 	@Autowired
 	private VelocityEngine velocityEngine;
 	
+	@Autowired
+	private MailTemplateService	mailTemplateService;
+	
 	@RequestMapping(value="/", method={ RequestMethod.GET })
 	public String emailPage() {
 		return "index";
@@ -47,6 +53,73 @@ public class MainController {
 	@RequestMapping(value="/create", method={ RequestMethod.GET })
 	public String createTemplate() {
 		return "create_template";
+	}
+	
+	@RequestMapping(value="/send", method={RequestMethod.GET})
+	  public @ResponseBody String send() throws UnsupportedEncodingException {
+	    
+	    String firstName = "Anat";
+	    String date = "15 June 2015";
+	    String time = "9.30 AM.";
+	    String recruitName = "Achiraya Janjiratavorn";
+	    String recruitPosition = "Recruitment Professional";
+	    String recruitPhone = "66 8 4751 6665";
+	    
+	    final String recipientAddress = "anat.pantera@gmail.com";
+        final String subject = "test ckeditor mail template in db";
+        //final String path = request.getSession().getServletContext().getRealPath("/") + "/mail-attachment/";
+        
+        //create mail
+        velocityEngine.init();
+        StringWriter writer = new StringWriter();
+        
+        //define variable in mail template
+        Context context = new VelocityContext();
+        context.put("firstName", firstName);
+        context.put("date", date);
+        context.put("time", time);
+        context.put("recruitName", recruitName);
+        context.put("recruitPosition", recruitPosition);
+        context.put("recruitPhone", recruitPhone);
+        
+        MailTemplate mailTemplate = mailTemplateService.findById(1);
+        
+        //merge context and writer to String 
+        velocityEngine.evaluate(context, writer, "SimpleVelocity", mailTemplate.getTemplate()); 
+        
+        
+        String mailHeader = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head>";
+         
+        //define finalTemplate
+        String finalTemplate = mailHeader + "<body>" + writer.toString() + "</body></html>";
+        
+        final String encode = new String(finalTemplate.getBytes("iso-8859-1"),"UTF-8");
+	        //create mime message
+	    MimeMessagePreparator preparator = new MimeMessagePreparator() {
+	      public void prepare(MimeMessage mimeMessage) throws Exception {
+	              
+	            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+	              message.setTo(recipientAddress);
+	              message.setSubject(subject);
+	              
+//	              FileSystemResource logo = new FileSystemResource(path + "logo.png");
+//	              message.addAttachment(logo.getFilename(), logo);
+//	              
+//	              FileSystemResource map = new FileSystemResource(path + "map.jpg");
+//	              message.addAttachment(map.getFilename(), map);
+	              
+	              message.setText(encode, true);
+	      }
+	    };
+        
+        //send email
+        mailSender.send(preparator);
+    
+        //console input
+        System.out.println("templateName : " + mailTemplate.getName());
+        System.out.println("finalTemplate : " + encode);
+    
+        return mailTemplate.getTemplate();
 	}
 	
 	@RequestMapping(value="/insert", method={ RequestMethod.GET })
