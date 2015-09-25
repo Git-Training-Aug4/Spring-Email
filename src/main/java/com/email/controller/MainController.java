@@ -26,6 +26,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.ui.velocity.VelocityEngineUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +58,11 @@ public class MainController {
 	@RequestMapping(value="/create", method={ RequestMethod.GET })
 	public String createTemplate() {
 		return "create_template";
+	}
+	
+	@RequestMapping(value="/create", method={ RequestMethod.POST })
+	public @ResponseBody void createTemplate(@RequestBody MailTemplate mailTemplate) {
+		mailTemplateService.insert(mailTemplate);
 	}
 	
 	@RequestMapping(value="/send", method={RequestMethod.GET})
@@ -323,6 +330,11 @@ public class MainController {
         // forwards to the view named "Result"
         return "result";
         
+	}
+	
+	@ModelAttribute("mailTemplate")
+	public MailTemplate getMailTemplate(){
+		return new MailTemplate();
 	}
 	
 	public File convertFile(MultipartFile file) throws IOException
